@@ -8,14 +8,6 @@ form.addEventListener("submit", function (e) {
 
   const name = document.querySelector("#name").value.trim();
   const email = document.querySelector("#email").value.trim();
-  const passwordEl = document.querySelector("#password");
-
-  if (!passwordEl) {
-    result.textContent = "Password input missing dalam HTML";
-    return;
-  }
-
-  const password = passwordEl.value.trim();
 
   if (name === "") {
     result.textContent = "Nama diperlukan";
@@ -24,11 +16,6 @@ form.addEventListener("submit", function (e) {
 
   if (email === "") {
     result.textContent = "Email diperlukan";
-    return;
-  }
-
-  if (password.length < 6) {
-    result.textContent = "Password minimum 6 aksara";
     return;
   }
 
