@@ -4,11 +4,19 @@ const result = document.querySelector("#result");
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
+  console.log("FORM SUBMIT FIRED");
+
   const name = document.querySelector("#name").value.trim();
   const email = document.querySelector("#email").value.trim();
-  const password = document.querySelector("#password").value.trim();
+  const passwordEl = document.querySelector("#password");
 
-  // VALIDATION
+  if (!passwordEl) {
+    result.textContent = "Password input missing dalam HTML";
+    return;
+  }
+
+  const password = passwordEl.value.trim();
+
   if (name === "") {
     result.textContent = "Nama diperlukan";
     return;
@@ -24,28 +32,18 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // GET EXISTING DATA
   let students = JSON.parse(localStorage.getItem("students")) || [];
 
-  // ADD NEW STUDENT
   students.push({
     name,
     email,
     source: "local"
   });
 
-  // SAVE
   localStorage.setItem("students", JSON.stringify(students));
 
-  // SUCCESS MESSAGE
-  result.innerHTML = `
-    <h3 style="color:green;">Berjaya Daftar ✅</h3>
-    <p>Redirect ke carian...</p>
-  `;
+  result.innerHTML = `<h3 style="color:green;">Berjaya Daftar ✅</h3>`;
 
-  console.log("STUDENT SAVED:", students);
-
-  // 🚀 AUTO GO TO SEARCH PAGE
   setTimeout(() => {
     window.location.href = "search.html";
   }, 1000);
