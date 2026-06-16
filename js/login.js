@@ -10,21 +10,22 @@ function(e){
 
 e.preventDefault();
 
+const username =
+document.querySelector("#username").value;
+
 const email =
 document.querySelector("#email").value;
 
-const password =
-document.querySelector("#password").value;
+
+if(username === ""){
+result.textContent =
+"Sila masukkan username";
+return;
+}
 
 if(email === ""){
 result.textContent =
 "Sila masukkan email";
-return;
-}
-
-if(password === ""){
-result.textContent =
-"Sila masukkan password";
 return;
 }
 
