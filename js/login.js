@@ -1,35 +1,45 @@
-const form =
-document.querySelector("#loginForm");
+const form = document.querySelector("#loginForm");
+const result = document.querySelector("#result");
 
-const result =
-document.querySelector("#result");
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-form.addEventListener(
-"submit",
-function(e){
+  const username = document.querySelector("#username").value.trim();
+  const email = document.querySelector("#email").value.trim();
 
-e.preventDefault();
+  // validation kosong
+  if (username === "") {
+    result.textContent = "Sila masukkan username";
+    return;
+  }
 
-const username =
-document.querySelector("#username").value;
+  if (email === "") {
+    result.textContent = "Sila masukkan email";
+    return;
+  }
 
-const email =
-document.querySelector("#email").value;
+  // ambil data register dari localStorage
+  const students = JSON.parse(localStorage.getItem("students")) || [];
 
+  // cari match user
+  const user = students.find(
+    student =>
+      student.name.toLowerCase() === username.toLowerCase() &&
+      student.email.toLowerCase() === email.toLowerCase()
+  );
 
-if(username === ""){
-result.textContent =
-"Sila masukkan username";
-return;
-}
-
-if(email === ""){
-result.textContent =
-"Sila masukkan email";
-return;
-}
-
-result.innerHTML =
-"<h3>Login Berjaya</h3>";
-
+  // kalau jumpa
+  if (user) {
+    result.innerHTML = `
+      <h3 style="color:green;">Login Berjaya ✅</h3>
+      <p>Selamat datang, ${user.name}</p>
+    `;
+  } 
+  // kalau tak jumpa
+  else {
+    result.innerHTML = `
+      <h3 style="color:red;">Login Gagal ❌</h3>
+      <p>Username atau email tidak padan</p>
+    `;
+  }
 });
