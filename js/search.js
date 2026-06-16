@@ -1,36 +1,49 @@
 const btn = document.querySelector("#searchBtn");
 const list = document.querySelector("#studentList");
+const input = document.querySelector("#searchInput");
 
 btn.addEventListener("click", async function () {
-  console.log("CLICK OK");
+  console.log("SEARCH TRIGGERED");
 
-  const keyword = document
-    .querySelector("#searchInput")
-    .value
-    .toLowerCase();
+  const keyword = input.value.toLowerCase().trim();
 
   list.innerHTML = "Loading...";
 
   try {
+    // 🌐 API DATA
     const response = await fetch("https://jsonplaceholder.typicode.com/users");
-    const students = await response.json();
+    const apiStudents = await response.json();
 
-    const result = students.filter(student =>
+    // 💾 LOCAL STORAGE DATA (pelajar daftar)
+    const localStudents = JSON.parse(localStorage.getItem("students")) || [];
+
+    // 🔗 COMBINE DATA
+    const allStudents = [
+      ...apiStudents,
+      ...localStudents
+    ];
+
+    // 🔍 FILTER SEARCH
+    const result = allStudents.filter(student =>
       student.name.toLowerCase().includes(keyword)
     );
 
+    // ❌ NO RESULT
     if (result.length === 0) {
       list.innerHTML = "Tiada data dijumpai";
       return;
     }
 
+    // 🧹 CLEAR LIST
     list.innerHTML = "";
 
+    // 🎯 DISPLAY RESULT
     result.forEach(student => {
       list.innerHTML += `
         <div class="card">
           <h3>${student.name}</h3>
-          <p>${student.email}</p>
+          <p>${student.email || "Tiada email"}</p>
+          <small>${student.source || "API"}</small>
         </div>
       `;
     });

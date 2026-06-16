@@ -1,70 +1,51 @@
-import {
-  validateName,
-  validateUsername,
-  validateEmail
-} from "./validation.js";
-
 const form = document.querySelector("#registerForm");
 const result = document.querySelector("#result");
 
-form.addEventListener("submit", async (e) => {
+form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  console.log("FORM SUBMIT OK");
-
   const name = document.querySelector("#name").value.trim();
-  const username = document.querySelector("#username").value.trim();
   const email = document.querySelector("#email").value.trim();
+  const password = document.querySelector("#password").value.trim();
 
-  if (!validateName(name)) {
-    result.textContent = "Nama tidak sah";
+  // 🧪 SIMPLE VALIDATION
+  if (name === "") {
+    result.textContent = "Nama diperlukan";
     return;
   }
 
-  if (!validateUsername(username)) {
-    result.textContent = "Username anda salah";
+  if (email === "") {
+    result.textContent = "Email diperlukan";
     return;
   }
 
-  if (!validateEmail(email)) {
-    result.textContent = "Email tidak sah";
+  if (password.length < 6) {
+    result.textContent = "Password minimum 6 aksara";
     return;
   }
 
-  try {
-    const response = await fetch(
-      "https://jsonplaceholder.typicode.com/users",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name,
-          username,
-          email
-        })
-      }
-    );
+  // 💾 GET EXISTING DATA
+  let students = JSON.parse(localStorage.getItem("students")) || [];
 
-    if (!response.ok) {
-      throw new Error("Request failed");
-    }
+  // ➕ ADD NEW STUDENT
+  students.push({
+    name,
+    email,
+    source: "local"
+  });
 
-    const data = await response.json();
+  // 💽 SAVE BACK TO LOCALSTORAGE
+  localStorage.setItem("students", JSON.stringify(students));
 
-    console.log("API RESPONSE:", data);
+  // 🎉 SUCCESS MESSAGE
+  result.innerHTML = `
+    <h3 style="color:green;">Berjaya Daftar ✅</h3>
+    <p>Nama: ${name}</p>
+    <p>Email: ${email}</p>
+  `;
 
-    result.innerHTML = `
-      <h3 style="color:green;">Berjaya Daftar ✅</h3>
-      <p>Nama: ${name}</p>
-      <p>Email: ${email}</p>
-    `;
+  // 🧹 RESET FORM
+  form.reset();
 
-    form.reset();
-
-  } catch (error) {
-    console.error(error);
-    result.textContent = "Ralat Sambungan API";
-  }
+  console.log("STUDENT SAVED:", students);
 });
