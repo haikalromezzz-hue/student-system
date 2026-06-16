@@ -7,7 +7,7 @@ form.addEventListener("submit", function (e) {
   const username = document.querySelector("#username").value.trim();
   const email = document.querySelector("#email").value.trim();
 
-  // validation kosong
+  // VALIDATION KOSONG
   if (username === "") {
     result.textContent = "Sila masukkan username";
     return;
@@ -18,28 +18,30 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // ambil data register dari localStorage
+  // AMBIL DATA REGISTER
   const students = JSON.parse(localStorage.getItem("students")) || [];
 
-  // cari match user
-  const user = students.find(
-    student =>
-      student.name.toLowerCase() === username.toLowerCase() &&
-      student.email.toLowerCase() === email.toLowerCase()
+  console.log("INPUT LOGIN:", username, email);
+  console.log("LOCAL DATA:", students);
+
+  // CARI MATCH (NAME + EMAIL)
+  const user = students.find(student =>
+    student.name.toLowerCase().trim() === username.toLowerCase().trim() &&
+    student.email.toLowerCase().trim() === email.toLowerCase().trim()
   );
 
-  // kalau jumpa
+  // JIKA JUMPA
   if (user) {
     result.innerHTML = `
       <h3 style="color:green;">Login Berjaya ✅</h3>
       <p>Selamat datang, ${user.name}</p>
     `;
-  } 
-  // kalau tak jumpa
+  }
+  // JIKA TAK JUMPA
   else {
     result.innerHTML = `
       <h3 style="color:red;">Login Gagal ❌</h3>
-      <p>Username atau email tidak padan</p>
+      <p>Username atau email tidak sepadan</p>
     `;
   }
 });
