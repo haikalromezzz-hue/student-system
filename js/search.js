@@ -1,67 +1,42 @@
-const btn =
-document.querySelector("#searchBtn");
+const btn = document.querySelector("#searchBtn");
+const list = document.querySelector("#studentList");
 
-const list =
-document.querySelector("#studentList");
+btn.addEventListener("click", async function () {
+  console.log("CLICK OK");
 
-btn.addEventListener(
-"click",
-async function(){
+  const keyword = document
+    .querySelector("#searchInput")
+    .value
+    .toLowerCase();
 
-const keyword =
-document
-.querySelector("#searchInput")
-.value
-.toLowerCase();
+  list.innerHTML = "Loading...";
 
-list.innerHTML =
-"Loading...";
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const students = await response.json();
 
-try{
+    const result = students.filter(student =>
+      student.name.toLowerCase().includes(keyword)
+    );
 
-const response =
-await fetch(
-"https://jsonplaceholder.typicode.com/users"
-);
+    if (result.length === 0) {
+      list.innerHTML = "Tiada data dijumpai";
+      return;
+    }
 
-const students =
-await response.json();
+    list.innerHTML = "";
 
-const result =
-students.filter(
-student =>
-student.name
-.toLowerCase()
-.includes(keyword)
-);
+    result.forEach(student => {
+      list.innerHTML += `
+        <div class="card">
+          <h3>${student.name}</h3>
+          <p>${student.email}</p>
+        </div>
+      `;
+    });
 
-if(result.length === 0){
-
-list.innerHTML =
-"Tiada data dijumpai";
-return;
-
-}
-
-list.innerHTML = "";
-
-result.forEach(student=>{
-
-list.innerHTML += `
-<div class="card">
-<h3>${student.name}</h3>
-<p>${student.email}</p>
-</div>
-`;
-
-});
-
-}
-catch(error){
-
-list.innerHTML =
-"Ralat API";
-
-}
-
+  } catch (error) {
+    console.error(error);
+    list.innerHTML = "Ralat API";
+  }
 });

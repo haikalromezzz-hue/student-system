@@ -1,78 +1,70 @@
 import {
-validateName,
-validateEmail,
-validatePassword
-}
-from "./validation.js";
+  validateName,
+  validateUsername,
+  validateEmail
+} from "./validation.js";
 
-const form =
-document.querySelector("#registerForm");
+const form = document.querySelector("#registerForm");
+const result = document.querySelector("#result");
 
-const result =
-document.querySelector("#result");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-form.addEventListener(
-"submit",
-async function(e){
+  console.log("FORM SUBMIT OK");
 
-e.preventDefault();
+  const name = document.querySelector("#name").value.trim();
+  const username = document.querySelector("#username").value.trim();
+  const email = document.querySelector("#email").value.trim();
 
-const name =
-document.querySelector("#name").value;
+  if (!validateName(name)) {
+    result.textContent = "Nama tidak sah";
+    return;
+  }
 
-const email =
-document.querySelector("#email").value;
+  if (!validateUsername(username)) {
+    result.textContent = "Username anda salah";
+    return;
+  }
 
-const password =
-document.querySelector("#password").value;
+  if (!validateEmail(email)) {
+    result.textContent = "Email tidak sah";
+    return;
+  }
 
-if(!validateName(name)){
-result.textContent =
-"Nama tidak sah";
-return;
-}
+  try {
+    const response = await fetch(
+      "https://jsonplaceholder.typicode.com/users",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          username,
+          email
+        })
+      }
+    );
 
-if(!validateEmail(email)){
-result.textContent =
-"Email tidak sah";
-return;
-}
+    if (!response.ok) {
+      throw new Error("Request failed");
+    }
 
-if(!validatePassword(password)){
-result.textContent =
-"Password minimum 6 aksara";
-return;
-}
+    const data = await response.json();
 
-try{
+    console.log("API RESPONSE:", data);
 
-const response =
-await fetch(
-"https://jsonplaceholder.typicode.com/users",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-name,
-email
-})
-}
-);
+    result.innerHTML = `
+      <h3 style="color:green;">Berjaya Daftar ✅</h3>
+      <p>Nama: ${name}</p>
+      <p>Email: ${email}</p>
+    `;
 
-const data =
-await response.json();
+    form.reset();
 
-result.innerHTML =
-`<h3>Berjaya Daftar</h3>`;
-
-}
-catch(error){
-
-result.textContent =
-"Ralat Sambungan API";
-
-}
-
+  } catch (error) {
+    console.error(error);
+    result.textContent = "Ralat Sambungan API";
+  }
 });
