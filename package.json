@@ -1,12 +1,30 @@
 {
-  "name":"student-system",
-  "type":"module",
-  "scripts":{
-    "test":"vitest",
-    "coverage":"vitest run --coverage"
+  "name": "student-system",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
-  "devDependencies":{
-    "@vitest/coverage-v8":"latest",
-    "vitest":"latest"
-  }
+  "devDependencies": {
+    "@vitest/coverage-v8": "latest",
+    "jest": "^30.4.2",
+    "vitest": "latest"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haikalromezzz-hue/student-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haikalromezzz-hue/student-system/issues"
+  },
+  "homepage": "https://github.com/haikalromezzz-hue/student-system#readme"
 }
