@@ -8,7 +8,7 @@ form.addEventListener("submit", function (e) {
   const email = document.querySelector("#email").value.trim();
   const password = document.querySelector("#password").value.trim();
 
-  // 🧪 SIMPLE VALIDATION
+  // VALIDATION
   if (name === "") {
     result.textContent = "Nama diperlukan";
     return;
@@ -24,28 +24,29 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // 💾 GET EXISTING DATA
+  // GET EXISTING DATA
   let students = JSON.parse(localStorage.getItem("students")) || [];
 
-  // ➕ ADD NEW STUDENT
+  // ADD NEW STUDENT
   students.push({
     name,
     email,
     source: "local"
   });
 
-  // 💽 SAVE BACK TO LOCALSTORAGE
+  // SAVE
   localStorage.setItem("students", JSON.stringify(students));
 
-  // 🎉 SUCCESS MESSAGE
+  // SUCCESS MESSAGE
   result.innerHTML = `
     <h3 style="color:green;">Berjaya Daftar ✅</h3>
-    <p>Nama: ${name}</p>
-    <p>Email: ${email}</p>
+    <p>Redirect ke carian...</p>
   `;
 
-  // 🧹 RESET FORM
-  form.reset();
-
   console.log("STUDENT SAVED:", students);
+
+  // 🚀 AUTO GO TO SEARCH PAGE
+  setTimeout(() => {
+    window.location.href = "search.html";
+  }, 1000);
 });
