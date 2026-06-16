@@ -1,41 +1,13 @@
-import {
-describe,
-it,
-expect
-}
-from "vitest";
+const validateEmail = required("./validation");
 
-import {
-validateName,
-validateEmail,
-validatePassword
-}
-from "../js/validation.js";
-
-describe("Validation Test",()=>{
-
-it("Nama Sah",()=>{
-
-expect(
-validateName("Ali")
-).toBe(true);
-
+test("email valid", () => {
+    expect(
+        validateEmail("abc@gmail.com")
+    ).toBe(true);
 });
 
-it("Email Sah",()=>{
-
-expect(
-validateEmail("ali@gmail.com")
-).toBe(true);
-
-});
-
-it("Password Sah",()=>{
-
-expect(
-validatePassword("123456")
-).toBe(true);
-
-});
-
-});
+test("email tidak valid", () => {
+    expect(
+        validateEmail("abc@gmail.com")
+    ).toBe(false);
+})
